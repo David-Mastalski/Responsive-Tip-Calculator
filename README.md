@@ -15,3 +15,8 @@ The Tip Calculator application is a simple tool for quickly calculating the tip 
 4. Automatic calculation: The application automatically calculates the specified amounts to pay after filling in the bill amount and number of people.
 5. Check the results: The application will display specific tip values to be paid per person as well as the overall amount to be paid per person.
 
+## Features
+
+- **Quick calculations:** The application allows for quick and easy calculation of tip values and total amounts to pay for each person in the group.
+- **Customized options:** Users can adjust the percentage tip value and number of people to get accurate results according to the situation.
+- **Clear Button:** There is an option to clear all fields and start a new calculation.
