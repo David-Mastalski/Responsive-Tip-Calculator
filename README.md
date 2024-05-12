@@ -20,7 +20,7 @@ The Tip Calculator application is a simple tool for quickly calculating the tip 
 - **Quick calculations:** The application allows for quick and easy calculation of tip values and total amounts to pay for each person in the group.
 - **Customized options:** Users can adjust the percentage tip value and number of people to get accurate results according to the situation.
 - **Clear Button:** There is an option to clear all fields and start a new calculation.
-- 
+
 &nbsp;
 
 <img align="center" src="https://raw.githubusercontent.com/David-Mastalski/Responsive-Tip-Calculator/main/demo/demo1.png" alt="Tip Calculator Demo" width="100%">
