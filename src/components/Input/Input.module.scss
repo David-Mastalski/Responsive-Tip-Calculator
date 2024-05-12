@@ -1,0 +1,34 @@
+@import "../../styles/utilities/variables";
+
+.inputWrapper {
+  background-color: $Very-light-grayish-cyan;
+  border-radius: 0.5rem;
+  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.5rem 1.5rem;
+
+  &.error {
+    border-color: $Red;
+  }
+
+  .icon {
+    font-size: 2.8rem;
+  }
+
+  input {
+    background-color: transparent;
+    color: $Very-dark-cyan;
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 2.8rem;
+    text-align: right;
+  }
+
+  input::placeholder {
+    color: $Grayish-cyan;
+  }
+}

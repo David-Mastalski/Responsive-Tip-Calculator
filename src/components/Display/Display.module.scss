@@ -1,0 +1,73 @@
+@import "../../styles/utilities/variables";
+
+.display {
+  background-color: $Very-dark-cyan;
+  border-radius: 1rem;
+  padding: 3rem 2rem 2rem;
+
+  justify-content: space-between;
+  flex: 1;
+  gap: 3.5rem;
+
+  &__group {
+    gap: 2.5rem;
+  }
+
+  &__row {
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__label {
+    .header {
+      color: $White;
+      font-size: 1.4rem;
+    }
+    .unit {
+      color: $Grayish-cyan;
+      font-size: 1.2rem;
+    }
+  }
+
+  &__amt {
+    color: $Strong-cyan;
+    font-size: 3rem;
+  }
+
+  &__resetBtn {
+    background-color: $Strong-cyan;
+    border: none;
+    border-radius: 0.5rem;
+    outline: none;
+    color: $Very-dark-cyan;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    padding: 1rem 0;
+  }
+}
+
+.display,
+.display__group,
+.display__row {
+  display: flex;
+}
+
+.display,
+.display__group {
+  flex-direction: column;
+}
+
+@media screen and (min-width: $MediaMinWidth) {
+  .display {
+    padding: 4.5rem 3.8rem 3.8rem;
+    &__amt {
+      font-size: 3.6rem;
+    }
+    &__resetBtn {
+      font-size: 1.6rem;
+      padding: 1rem 0;
+    }
+  }
+}

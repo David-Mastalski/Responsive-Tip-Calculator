@@ -1,0 +1,36 @@
+@import "base/reset";
+@import "base/typography";
+@import "utilities/variables";
+
+body {
+  background-color: $Light-grayish-cyan;
+  color: $Grayish-cyan;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  min-height: 100dvh;
+}
+
+.splitterHeading {
+  color: $Very-dark-cyan;
+  font-size: 2.2rem;
+  text-transform: upperCase;
+  line-height: 2.8rem;
+  letter-spacing: 1rem;
+  font-weight: 500;
+  padding: 3.5rem 0;
+}
+
+@media screen and (min-width: $MediaMinWidth) {
+  .app {
+    justify-content: center;
+    gap: 4rem;
+  }
+  .splitterHeading {
+    padding: 0;
+  }
+}
