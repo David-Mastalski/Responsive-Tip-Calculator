@@ -1,10 +1,6 @@
 import styles from "./Input.module.scss";
 
-export function Input({ icon, isError, value, setter }) {
-  const handleOnChange = (e) => {
-    setter(e.target.value === "" ? "" : e.target.valueAsNumber);
-  };
-
+export function Input({ id, value, icon, isError, register, options }) {
   return (
     <label
       htmlFor="bill"
@@ -13,10 +9,10 @@ export function Input({ icon, isError, value, setter }) {
       <span className={styles.icon}>{icon}</span>
       <input
         type="number"
-        id="bill"
+        id={id}
         value={value}
-        onChange={handleOnChange}
         placeholder="0"
+        {...register(`${id}`, options)}
       />
     </label>
   );

@@ -1,134 +1,80 @@
-import { useContext, useEffect } from "react";
 import styles from "./Tips.module.scss";
-import {
-  CustomInputValueContext,
-  SelectedTipContext,
-  TipContext,
-} from "../../context/AppContext";
 
-export function Tips() {
-  const [, setSelectedTip] = useContext(SelectedTipContext);
-  const [tip, setTip] = useContext(TipContext);
-  const [customValue, setCustomValue] = useContext(CustomInputValueContext);
-
-  useEffect(() => {
-    if (tip === "custom") {
-      setSelectedTip(customValue === "" ? 0 : Number(customValue));
-    } else {
-      setSelectedTip(Number(tip));
-    }
-  }, [tip, customValue, setSelectedTip]);
-
-  const handleRadioChange = (e) => {
-    setTip(e.target.value);
-  };
-
+export function Tips({ register, options, customValue, selectedTip }) {
   return (
     <div className={styles.tilesGrid}>
-      <div className={styles.tipAmount}>
-        <input
-          type="radio"
-          id="tip-5"
-          value="5"
-          checked={tip === "5"}
-          onChange={handleRadioChange}
-        />
-        <label
-          htmlFor="tip-5"
-          className={`${styles.tipButton} ${styles["tipButton--normal"]}`}
-        >
-          5%
-        </label>
-      </div>
-      <div className={styles.tipAmount}>
-        <input
-          type="radio"
-          id="tip-10"
-          value="10"
-          checked={tip === "10"}
-          onChange={handleRadioChange}
-        />
-        <label
-          htmlFor="tip-10"
-          className={`${styles.tipButton} ${styles["tipButton--normal"]}`}
-        >
-          10%
-        </label>
-      </div>
-      <div className={styles.tipAmount}>
-        <input
-          type="radio"
-          id="tip-15"
-          value="15"
-          checked={tip === "15"}
-          onChange={handleRadioChange}
-        />
-        <label
-          htmlFor="tip-15"
-          className={`${styles.tipButton} ${styles["tipButton--normal"]}`}
-        >
-          15%
-        </label>
-      </div>
-      <div className={styles.tipAmount}>
-        <input
-          type="radio"
-          id="tip-25"
-          value="25"
-          checked={tip === "25"}
-          onChange={handleRadioChange}
-        />
-        <label
-          htmlFor="tip-25"
-          className={`${styles.tipButton} ${styles["tipButton--normal"]}`}
-        >
-          25%
-        </label>
-      </div>
-      <div className={styles.tipAmount}>
-        <input
-          type="radio"
-          id="tip-50"
-          value="50"
-          checked={tip === "50"}
-          onChange={handleRadioChange}
-        />
-        <label
-          htmlFor="tip-50"
-          className={`${styles.tipButton} ${styles["tipButton--normal"]}`}
-        >
-          50%
-        </label>
-      </div>
+      {["5", "10", "15", "25", "50"].map((tipValue) => (
+        <div key={tipValue} className={styles.tipAmount}>
+          <input
+            type="radio"
+            id={`tip-${tipValue}`}
+            value={tipValue}
+            name="tip"
+            checked={selectedTip === tipValue}
+            {...register("amount")}
+          />
+          <label
+            htmlFor={`tip-${tipValue}`}
+            className={`${styles.tipButton} ${styles["tipButton--normal"]}`}
+          >
+            {tipValue}%
+          </label>
+        </div>
+      ))}
       <div className={styles.tipAmount}>
         <input
           type="radio"
           id="tip-custom"
           value="custom"
-          checked={tip === "custom"}
-          onChange={handleRadioChange}
+          name="tip"
+          {...register("amount")}
+          checked={selectedTip === "custom"}
+        />
+        {selectedTip === "custom" ? (
+          <input
+            type="number"
+            value={customValue}
+            placeholder="0"
+            {...register("custom", options)}
+            className={styles.customInput}
+          />
+        ) : (
+          <label
+            htmlFor="tip-custom"
+            className={`${styles.tipButton} ${styles["tipButton--custom"]}`}
+          >
+            Custom
+          </label>
+        )}
+      </div>
+    </div>
+  );
+}
+
+{
+  /* <div className={styles.tipAmount}>
+        <input
+          type="radio"
+          id="tip-custom"
+          value="custom"
+          name="tip"
+          checked={selectedTip === "custom"}
         />
         <label
           htmlFor="tip-custom"
           className={`${styles.tipButton} ${styles["tipButton--custom"]}`}
         >
-          {tip === "custom" ? (
+          {selectedTip === "custom" ? (
             <input
               type="number"
-              value={customValue}
+              name="tip"
               placeholder="0"
-              onChange={(e) =>
-                setCustomValue(
-                  e.target.value === "" ? 0 : e.target.valueAsNumber
-                )
-              }
+
               className={styles.customInput}
             />
           ) : (
             "Custom"
           )}
         </label>
-      </div>
-    </div>
-  );
+      </div> */
 }

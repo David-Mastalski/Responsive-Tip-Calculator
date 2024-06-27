@@ -1,88 +1,109 @@
 import styles from "./Layout.module.scss";
-import { Form } from "../Form/Form";
-import { useEffect, useState } from "react";
-import {
-  BillContext,
-  CustomInputValueContext,
-  NumberOfPeopleContext,
-  PeopleErrorContext,
-  SelectedTipContext,
-  TipContext,
-} from "../../context/AppContext";
 import { Display } from "../Display/Display";
+import { Input } from "../Input/Input";
+import { Tips } from "../Tips/Tips";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 
 export function Layout() {
-  const [bill, setBill] = useState("");
-  const [selectedTip, setSelectedTip] = useState(5);
-  const [tip, setTip] = useState(String(selectedTip));
-  const [customValue, setCustomValue] = useState("");
-  const [people, setPeople] = useState("");
-  const [isError, setIsError] = useState(false);
-  const [tipAmout, setTipAmount] = useState(0);
+  const { register, watch, reset } = useForm({
+    defaultValues: {
+      bill: "",
+      people: "",
+      amount: "5",
+      custom: "",
+    },
+  });
+
+  const bill = watch("bill");
+  const people = watch("people");
+  const tip = watch("amount");
+  const customTipValue = watch("custom");
+
+  const [tipAmountForPerson, setTipAmountForPerson] = useState(0);
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    handleSetError();
-  }, [people]);
+    const validateTip = tip === "custom" ? customTipValue : tip;
 
-  useEffect(() => {
-    handleSubmit();
-  }, [bill, selectedTip, people]);
+    if (people !== "0") {
+      if (bill && validateTip !== "" && people !== "") {
+        const percent = Number(validateTip) / 100;
+        let personTipAmount = (Number(bill) * Number(percent)) / Number(people);
+        personTipAmount = personTipAmount.toFixed(2);
 
-  const handleSubmit = () => {
-    if (bill !== "" && people !== "") {
-      const percent = selectedTip / 100;
-      let personTipAmount = (bill * percent) / people;
-      personTipAmount = personTipAmount.toFixed(2);
+        let totalValue =
+          (Number(bill) + Number(bill) * Number(percent)) / Number(people);
+        totalValue = totalValue.toFixed(2);
 
-      let totalValue = (bill + bill * percent) / people;
-      totalValue = totalValue.toFixed(2);
-      setTipAmount(personTipAmount);
-      setTotal(totalValue);
+        setTipAmountForPerson(personTipAmount);
+        setTotal(totalValue);
+      }
     }
-  };
+  }, [bill, people, customTipValue, tip]);
 
   const handleReset = () => {
-    setBill("");
-    setSelectedTip(5);
-    setTip("5");
-    setCustomValue("");
-    setPeople("");
-    setIsError(false);
-    setTipAmount(0);
+    reset();
+    setTipAmountForPerson(0);
     setTotal(0);
   };
 
-  const handleSetError = () => {
-    if (people === 0) {
-      setIsError(true);
-    } else {
-      setIsError(false);
-    }
-  };
-
   return (
-    <BillContext.Provider value={[bill, setBill]}>
-      <SelectedTipContext.Provider value={[selectedTip, setSelectedTip]}>
-        <TipContext.Provider value={[tip, setTip]}>
-          <CustomInputValueContext.Provider
-            value={[customValue, setCustomValue]}
-          >
-            <NumberOfPeopleContext.Provider value={[people, setPeople]}>
-              <PeopleErrorContext.Provider value={[isError, setIsError]}>
-                <div className={styles.layout}>
-                  <Form />
-                  <Display
-                    tipAmout={tipAmout}
-                    total={total}
-                    handleReset={handleReset}
-                  />
-                </div>
-              </PeopleErrorContext.Provider>
-            </NumberOfPeopleContext.Provider>
-          </CustomInputValueContext.Provider>
-        </TipContext.Provider>
-      </SelectedTipContext.Provider>
-    </BillContext.Provider>
+    <>
+      <div className={styles.layout}>
+        <form className={styles.form}>
+          <div className={styles["form__wrapper"]}>
+            <div>
+              <p className={styles["groupTitle"]}>Bill</p>
+              <Input id="bill" value={bill} icon="$" register={register} />
+            </div>
+            <div>
+              <p className={styles["groupTitle"]}>Select Tip %</p>
+              <Tips
+                register={register}
+                options={{
+                  setValueAs: (v) => {
+                    if (v === "" || /^0+$/.test(v)) {
+                      return "0";
+                    }
+                    return v.replace(/^0+/, "");
+                  },
+                }}
+                customValue={customTipValue}
+                selectedTip={tip}
+              />
+            </div>
+            <div>
+              <div className={styles.errorWrapper}>
+                <p className={styles["groupTitle"]}>Number of People</p>
+                {people === "0" && (
+                  <p className={styles.error}>Can't be zero</p>
+                )}
+              </div>
+              <Input
+                id="people"
+                value={people}
+                icon="#"
+                register={register}
+                options={{
+                  setValueAs: (v) => {
+                    if (v === "" || /^0+$/.test(v)) {
+                      return "0";
+                    }
+                    return v.replace(/^0+/, "");
+                  },
+                }}
+                isError={people === "0"}
+              />
+            </div>
+          </div>
+        </form>
+        <Display
+          tipAmount={tipAmountForPerson}
+          totalAmount={total}
+          handleReset={handleReset}
+        />
+      </div>
+    </>
   );
 }
